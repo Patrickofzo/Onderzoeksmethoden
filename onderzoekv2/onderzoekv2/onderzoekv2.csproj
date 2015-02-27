@@ -34,13 +34,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="-\Guard.cs" />
+    <Compile Include="-\System\DataStructures\AvlTree.cs" />
+    <Compile Include="-\System\DataStructures\AvlTreeNode.cs" />
+    <Compile Include="-\System\DataStructures\BinarySearchTree.cs" />
+    <Compile Include="-\System\DataStructures\BinaryTreeBase.cs" />
+    <Compile Include="-\System\DataStructures\BinaryTreeNode.cs" />
+    <Compile Include="-\System\DataStructures\FuncComparer.cs" />
+    <Compile Include="-\System\IComparableExtensions.cs" />
+    <Compile Include="-\Throw.cs" />
     <Compile Include="BinaryHeap.cs" />
+    <Compile Include="BinarySearchTree.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="RedBlackTree.cs" />
     <Compile Include="SpaceGoat.cs" />
+    <Compile Include="Test.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="CSharpTest.Net.Collections">
+      <HintPath>..\packages\CSharpTest.Net.Collections.14.906.1403.1082\lib\net40\CSharpTest.Net.Collections.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

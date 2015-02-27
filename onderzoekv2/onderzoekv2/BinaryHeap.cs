@@ -5,7 +5,7 @@ using System.Text;
 
 namespace onderzoek
 {
-    class BinaryHeapy<T> : ICollection<T> where T : IComparable<T>
+    class BinaryHeap<T> : ICollection<T> where T : IComparable<T>
     {
         // Constants
         private const int DEFAULT_SIZE = 4;
@@ -45,10 +45,10 @@ namespace onderzoek
         /// <summary>
         /// Creates a new binary heap.
         /// </summary>
-        public BinaryHeapy()
+        public BinaryHeap()
         {
         }
-        private BinaryHeapy(T[] data, int count)
+        private BinaryHeap(T[] data, int count)
         {
             Capacity = count;
             _count = count;

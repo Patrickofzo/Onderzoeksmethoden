@@ -11,31 +11,17 @@ using System.DataStructures;
 namespace onderzoek {
 	class MainClass {
 		public static void Main(string[] args) {
-			StringTests("stringdata");
-		}
-
-		public static void StringTests(string filename){
-			using(StreamReader sr = new StreamReader(filename)) {
-				string[] data = sr.ReadLine().Split(new char[]{ ' ' });
-
-				ISearchTree<string> rb = new RedBlack<string>(data);
-				ISearchTree<string> b = new BTree<string>(data);
-				ISearchTree<string> bplus = new BPlusTree<string>(data);
-				ISearchTree<string> avl = new AvlTree<string>(data);
-				ISearchTree<string> sg = new ScapeGoat<string>(data);
-				ISearchTree<string> bh = new BinaryHeap<string>(data);
-				ISearchTree<string> beap = new Beap<string>(data);
-			}
+            Test<string> stringTest = new Test<string>(new string[] { "hallo", "ingmar" });
 		}
 	}
 
-	interface ISearchTree<TData> where TData : IComparable
+	interface ISearchTree<TData> where TData : IComparable, IComparable<TData>
 	{
 		void Add(TData element);
 		bool Find(TData element);
 	}
 
-	class RedBlack<TData> : ISearchTree<TData> where TData : IComparable{
+    class RedBlack<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>{
 		RedBlackTree<RedBlackNode<TData, int>, TData, int> _tree;
 
 		public RedBlack(){
@@ -58,14 +44,19 @@ namespace onderzoek {
 		}
 	}
 
-	class BPlusTree<TData> : ISearchTree<TData> where TData : IComparable{
+    class BPlusTree<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>
+    {
 		CSharpTest.Net.Collections.BPlusTree<TData, int> _tree;
 		public BPlusTree(TData[] data){
 			this._tree = new CSharpTest.Net.Collections.BPlusTree<TData, int>();
+            foreach (TData ele in data)
+            {
+                this.Add(ele);
+            }
 		}
 
 		public void Add(TData element){
-			this._tree.Add(TData, 0);
+			this._tree.Add(element, 0);
 		}
 
 		public bool Find(TData element){
@@ -73,7 +64,8 @@ namespace onderzoek {
 		}
 	}
 
-	class BTree<TData> : ISearchTree<TData> where TData : IComparable{
+    class BTree<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>
+    {
 		CSharpTest.Net.Collections.BTreeList<TData> _tree;
 		public BTree(TData[] data){
 			this._tree = new BTreeList<TData>();
@@ -91,48 +83,63 @@ namespace onderzoek {
 		}
 	}
 
-	class AvlTree<TData> : ISearchTree<TData> where TData : IComparable{
-		System.DataStructures.AvlTree<TData> _tree;
-		public AvlTree(TData[] data){
-			this._tree = new System.DataStructures.AvlTree<TData>(data);
+	class AvlTree<T> : ISearchTree<T> where T : IComparable, IComparable<T>{
+		System.DataStructures.AvlTree<T> _tree;
+		public AvlTree(T[] data){
+            this._tree = new System.DataStructures.AvlTree<T>(data);
 		}
 
-		public void Add(TData element){
+		public void Add(T element){
 			this._tree.Add(element);
 		}
 
-		public bool Find(TData element){
+		public bool Find(T element){
 			return this._tree.Contains(element);
 		}
 	}
 
-	class ScapeGoat<TData> : ISearchTree<TData> where TData : IComparable{
+    class ScapeGoat<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>
+    {
+        SpaceGoat<TData> _tree;
 		public ScapeGoat(TData[] data){
-			Console.WriteLine("Hello");
+            this._tree = new SpaceGoat<TData>();
+            foreach (TData ele in data)
+            {
+                this.Add(ele);
+            }
 		}
 
 		public void Add(TData element){
+            this._tree.Add(element);
 		}
 
 		public bool Find(TData element){
-			return false;
+            return this._tree.Contains(element);
 		}
 	}
 
-	class BinaryHeap<TData> : ISearchTree<TData> where TData : IComparable{
-        public BinaryHeap(TData[] data){
-			Console.WriteLine("Hello");
+    class BinHeap<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>
+    {
+        BinaryHeap<TData> _tree;
+        public BinHeap(TData[] data){
+            this._tree = new BinaryHeap<TData>();
+            foreach (TData ele in data)
+            {
+                this.Add(ele);
+            }
 		}
 
 		public void Add(TData element){
+            this._tree.Add(element);
 		}
 
 		public bool Find(TData element){
-			return false;
+            return this._tree.Contains(element);
 		}
 	}
 
-	class Beap<TData> : ISearchTree<TData> where TData : IComparable{
+    class Beap<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>
+    {
 		public Beap(TData[] data){
 			Console.WriteLine("Hello");
 		}

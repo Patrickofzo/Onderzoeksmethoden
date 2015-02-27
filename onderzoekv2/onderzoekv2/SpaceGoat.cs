@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+
+
 namespace onderzoek
 {
-    class ScapegoatTree<T> : BinarySearchTree<T>
+    
+    class SpaceGoat<T> : BinarySearchTree<T>
 where T : IComparable<T>
     {
         private float alpha;
@@ -14,7 +17,7 @@ where T : IComparable<T>
         /// Initialises a new instance of the ScapeGoatTree&lt;T&gt; class that is empty.
         /// </summary>
         /// <param name="alpha">The weight factor that is used when balancing the tree.</param>
-        public ScapegoatTree(float alpha = 0.75f)
+        public SpaceGoat(float alpha = 0.75f)
         {
             this.alpha = alpha;
             this.size = 0;
@@ -25,7 +28,7 @@ where T : IComparable<T>
         /// </summary>
         /// <param name="collection">The IEnumerable&lt;T&gt; whose elements are copied to the new ScapeGoatTree&lt;T&gt;.</param>
         /// <param name="alpha">The weight factor that is used when balancing the tree.</param>
-        public ScapegoatTree(IEnumerable<T> collection, float alpha = 0.75f)
+        public SpaceGoat(IEnumerable<T> collection, float alpha = 0.75f)
             : base()
         {
             this.alpha = alpha;
