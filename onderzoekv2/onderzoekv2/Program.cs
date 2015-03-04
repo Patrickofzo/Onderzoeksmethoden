@@ -42,7 +42,7 @@ namespace onderzoek {
             Random random2 = new Random();
             for (int i = 0; i < 1000; i++)
                 for (int j = 0; j < 10; j++)
-                    if(random2.Next(5) == 1)
+                    if(random2.Next(5) != 1)
                         list[i] = list[i] + s[random1.Next(s.Length)];
             return list;
         }
