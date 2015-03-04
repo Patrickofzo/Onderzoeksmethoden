@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Diagnostics;
 
 //NuGet packages
 using CSharpTest.Net.Collections;
@@ -18,7 +19,7 @@ namespace onderzoek {
 	interface ISearchTree<TData> where TData : IComparable, IComparable<TData>
 	{
 		void Add(TData element);
-		bool Find(TData element);
+        Tuple<int, bool> Find(TData element);
 	}
 
     class RedBlack<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>{
@@ -39,8 +40,14 @@ namespace onderzoek {
 			this._tree.InsertNode(node);
 		}
 
-		public bool Find(TData element){
-			return this._tree.Find(element) != null;
+        public Tuple<int, bool> Find(TData element)
+        {
+            RedBlackNode<TData, int> node;
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            node = this._tree.Find(element);
+            timer.Stop();
+            return new Tuple<int, bool>(timer.Elapsed.Milliseconds, node != null);
 		}
 	}
 
@@ -59,8 +66,14 @@ namespace onderzoek {
 			this._tree.Add(element, 0);
 		}
 
-		public bool Find(TData element){
-			return this._tree.Contains(new KeyValuePair<TData, int>(element, 0));
+        public Tuple<int, bool> Find(TData element)
+        {
+            bool b;
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            b = this._tree.Contains(new KeyValuePair<TData, int>(element, 0));
+            timer.Stop();
+            return new Tuple<int, bool>(timer.Elapsed.Milliseconds, b);
 		}
 	}
 
@@ -78,8 +91,14 @@ namespace onderzoek {
 			this._tree.Add(element);
 		}
 
-		public bool Find(TData element){
-			return this._tree.Contains(element);
+        public Tuple<int, bool> Find(TData element)
+        {
+            bool b;
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            b = this._tree.Contains(element);
+            timer.Stop();
+            return new Tuple<int, bool>(timer.Elapsed.Milliseconds, b);
 		}
 	}
 
@@ -93,8 +112,14 @@ namespace onderzoek {
 			this._tree.Add(element);
 		}
 
-		public bool Find(T element){
-			return this._tree.Contains(element);
+        public Tuple<int, bool> Find(T element)
+        {
+            bool b;
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            b = this._tree.Contains(element);
+            timer.Stop();
+            return new Tuple<int, bool>(timer.Elapsed.Milliseconds, b);
 		}
 	}
 
@@ -113,8 +138,14 @@ namespace onderzoek {
             this._tree.Add(element);
 		}
 
-		public bool Find(TData element){
-            return this._tree.Contains(element);
+        public Tuple<int, bool> Find(TData element)
+        {
+            bool b;
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            b = this._tree.Contains(element);
+            timer.Stop();
+            return new Tuple<int, bool>(timer.Elapsed.Milliseconds, b);
 		}
 	}
 
@@ -133,8 +164,14 @@ namespace onderzoek {
             this._tree.Add(element);
 		}
 
-		public bool Find(TData element){
-            return this._tree.Contains(element);
+        public Tuple<int, bool> Find(TData element)
+        {
+            bool b;
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            b = this._tree.Contains(element);
+            timer.Stop();
+            return new Tuple<int, bool>(timer.Elapsed.Milliseconds, b);
 		}
 	}
 
@@ -147,8 +184,9 @@ namespace onderzoek {
 		public void Add(TData element){
 		}
 
-		public bool Find(TData element){
-			return false;
+        public Tuple<int, bool> Find(TData element)
+        {
+            return new Tuple<int, bool>(0, false);
 		}
 	}
 }
