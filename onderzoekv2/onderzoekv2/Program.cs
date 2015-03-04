@@ -14,6 +14,38 @@ namespace onderzoek {
 		public static void Main(string[] args) {
             Test<string> stringTest = new Test<string>(new string[] { "hallo", "ingmar" });
 		}
+
+        public int[] randomInts() 
+        {
+            int[] list = new int[1000];
+            Random random = new Random();
+            for (int i = 0; i < 1000; i++)
+                list[i] = random.Next(int.MaxValue);
+            return list;
+        }
+
+        public char[] randomChar()
+        {
+            string s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            char[] list = new char[1000];
+            Random random = new Random();
+            for (int i = 0; i < 1000; i++)
+                list[i] = s[random.Next(s.Length)];
+            return list;
+        }
+
+        public string[] randomString()
+        {
+            string s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            string[] list = new string[1000];
+            Random random1 = new Random();
+            Random random2 = new Random();
+            for (int i = 0; i < 1000; i++)
+                for (int j = 0; j < 10; j++)
+                    if(random2.Next(5) == 1)
+                        list[i] = list[i] + s[random1.Next(s.Length)];
+            return list;
+        }
 	}
 
 	interface ISearchTree<TData> where TData : IComparable, IComparable<TData>
