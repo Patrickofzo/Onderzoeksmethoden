@@ -56,6 +56,7 @@ namespace onderzoek {
 
 	class RedBlack<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>{
 		RedBlackTree<RedBlackNode<TData, int>, TData, int> _tree;
+		public string name = "RedBlack";
 
 		public RedBlack(){
 			this._tree = new RedBlackTree<RedBlackNode<TData, int>, TData, int>();
@@ -80,13 +81,15 @@ namespace onderzoek {
 			timer.Start();
 			node = this._tree.Find(element);
 			timer.Stop();
-			return new Tuple<int, bool, float>(timer.Elapsed.Milliseconds, node != null, GC.GetTotalMemory(false));
+			return new Tuple<string, int, bool, float>(this.name, timer.Elapsed.Milliseconds, node != null, GC.GetTotalMemory(false));
 		}
 	}
 
 	class BPlusTree<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>
 	{
 		CSharpTest.Net.Collections.BPlusTree<TData, int> _tree;
+		public string name = "BPlus";
+
 		public BPlusTree(TData[] data){
 			this._tree = new CSharpTest.Net.Collections.BPlusTree<TData, int>();
 			foreach (TData ele in data)
@@ -107,13 +110,15 @@ namespace onderzoek {
 			timer.Start();
 			b = this._tree.Contains(new KeyValuePair<TData, int>(element, 0));
 			timer.Stop();
-			return new Tuple<int, bool, float>(timer.Elapsed.Milliseconds, b, GC.GetTotalMemory(false));
+			return new Tuple<string, int, bool, float>(this.name, timer.Elapsed.Milliseconds, b, GC.GetTotalMemory(false));
 		}
 	}
 
 	class BTree<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>
 	{
 		CSharpTest.Net.Collections.BTreeList<TData> _tree;
+		public string name = "BTree";
+
 		public BTree(TData[] data){
 			this._tree = new BTreeList<TData>();
 			foreach(TData ele in data){
@@ -133,12 +138,14 @@ namespace onderzoek {
 			timer.Start();
 			b = this._tree.Contains(element);
 			timer.Stop();
-			return new Tuple<int, bool, float>(timer.Elapsed.Milliseconds, b, GC.GetTotalMemory(false));
+			return new Tuple<string, int, bool, float>(this.name, timer.Elapsed.Milliseconds, b, GC.GetTotalMemory(false));
 		}
 	}
 
 	class AvlTree<T> : ISearchTree<T> where T : IComparable, IComparable<T>{
 		System.DataStructures.AvlTree<T> _tree;
+		public string name = "AVL";
+
 		public AvlTree(T[] data){
 			this._tree = new System.DataStructures.AvlTree<T>(data);
 		}
@@ -155,13 +162,14 @@ namespace onderzoek {
 			timer.Start();
 			b = this._tree.Contains(element);
 			timer.Stop();
-			return new Tuple<int, bool, float>(timer.Elapsed.Milliseconds, b, GC.GetTotalMemory(false));
+			return new Tuple<string, int, bool, float>(this.name, timer.Elapsed.Milliseconds, b, GC.GetTotalMemory(false));
 		}
 	}
 
 	class ScapeGoat<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>
 	{
 		SpaceGoat<TData> _tree;
+		public string name = "ScapeGoat";
 		public ScapeGoat(TData[] data){
 			this._tree = new SpaceGoat<TData>();
 			foreach (TData ele in data)
@@ -182,13 +190,14 @@ namespace onderzoek {
 			timer.Start();
 			b = this._tree.Contains(element);
 			timer.Stop();
-			return new Tuple<int, bool, float>(timer.Elapsed.Milliseconds, b, GC.GetTotalMemory(false));
+			return new Tuple<string, int, bool, float>(this.name, timer.Elapsed.Milliseconds, b, GC.GetTotalMemory(false));
 		}
 	}
 
 	class BinHeap<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>
 	{
 		BinaryHeap<TData> _tree;
+		public string name = "BinHeap";
 		public BinHeap(TData[] data){
 			this._tree = new BinaryHeap<TData>();
 			foreach (TData ele in data)
@@ -209,7 +218,7 @@ namespace onderzoek {
 			timer.Start();
 			b = this._tree.Contains(element);
 			timer.Stop();
-			return new Tuple<int, bool, float>(timer.Elapsed.Milliseconds, b, GC.GetTotalMemory(false));
+			return new Tuple<string, int, bool, float>(this.name, timer.Elapsed.Milliseconds, b, GC.GetTotalMemory(false));
 		}
 	}
 
