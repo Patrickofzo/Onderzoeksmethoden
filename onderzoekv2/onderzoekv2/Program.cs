@@ -12,9 +12,9 @@ using System.DataStructures;
 namespace onderzoek {
 	class MainClass {
 		public static void Main(string[] args) {
-            Test<string> stringTest = new Test<string>(randomStrings(), "testresults.txt");
             Test<int> intTest = new Test<int>(randomInts(), "testresults.txt");
-            Test<char> charTest = new Test<char>(randomChars(), "testresults.txt");
+            Test<string> stringTest = new Test<string>(randomStrings(), "testresults.txt");
+            //Test<char> charTest = new Test<char>(randomChars(), "testresults.txt");
             
             
         }
