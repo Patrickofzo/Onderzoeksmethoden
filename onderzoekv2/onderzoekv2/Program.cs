@@ -60,7 +60,7 @@ namespace onderzoek {
 
 	class RedBlack<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>{
 		RedBlackTree<RedBlackNode<TData, int>, TData, int> _tree;
-		public string name = "RedBlack";
+		public string name = "RedBlk";
 
 		public RedBlack(){
 			this._tree = new RedBlackTree<RedBlackNode<TData, int>, TData, int>();
@@ -177,7 +177,7 @@ namespace onderzoek {
 	class ScapeGoat<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>
 	{
 		SpaceGoat<TData> _tree;
-		public string name = "ScapeGoat";
+		public string name = "Goat";
 		public ScapeGoat(TData[] data){
 			this._tree = new SpaceGoat<TData>();
 			foreach (TData ele in data)
