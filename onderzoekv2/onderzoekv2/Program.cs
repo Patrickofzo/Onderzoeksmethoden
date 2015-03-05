@@ -79,6 +79,7 @@ namespace onderzoek {
 
 		public Tuple<string, int, bool, float> Find(TData element)
 		{
+			GC.WaitForFullGCComplete();
 			RedBlackNode<TData, int> node;
 			float m = GC.GetTotalMemory(false);
 			Stopwatch timer = new Stopwatch();
@@ -109,6 +110,7 @@ namespace onderzoek {
 		public Tuple<string, int, bool, float> Find(TData element)
 		{
 			bool b;
+			GC.WaitForFullGCComplete();
 			float m = GC.GetTotalMemory(false);
 			Stopwatch timer = new Stopwatch();
 			timer.Start();
@@ -137,6 +139,7 @@ namespace onderzoek {
 		public Tuple<string, int, bool, float> Find(TData element)
 		{
 			bool b;
+			GC.WaitForFullGCComplete();
 			float m = GC.GetTotalMemory(false);
 			Stopwatch timer = new Stopwatch();
 			timer.Start();
@@ -161,6 +164,7 @@ namespace onderzoek {
 		public Tuple<string, int, bool, float> Find(T element)
 		{
 			bool b;
+			GC.WaitForFullGCComplete();
 			float m = GC.GetTotalMemory(false);
 			Stopwatch timer = new Stopwatch();
 			timer.Start();
@@ -189,6 +193,7 @@ namespace onderzoek {
 		public Tuple<string, int, bool, float> Find(TData element)
 		{
 			bool b;
+			GC.WaitForFullGCComplete();
 			float m = GC.GetTotalMemory(false);
 			Stopwatch timer = new Stopwatch();
 			timer.Start();
@@ -217,6 +222,7 @@ namespace onderzoek {
 		public Tuple<string, int, bool, float> Find(TData element)
 		{
 			bool b;
+			GC.WaitForFullGCComplete();
 			float m = GC.GetTotalMemory(false);
 			Stopwatch timer = new Stopwatch();
 			timer.Start();
