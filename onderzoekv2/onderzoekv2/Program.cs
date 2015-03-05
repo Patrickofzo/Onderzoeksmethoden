@@ -12,7 +12,7 @@ using System.DataStructures;
 namespace onderzoek {
 	class MainClass {
 		public static void Main(string[] args) {
-			Test<string> stringTest = new Test<string>(new string[] { "hallo", "ingmar" });
+			Test<string> stringTest = new Test<string>(new string[] { "hallo", "ingmar" }, 'testresults.txt');
 		}
 
 		public int[] randomInts() 
@@ -51,7 +51,7 @@ namespace onderzoek {
 	interface ISearchTree<TData> where TData : IComparable, IComparable<TData>
 	{
 		void Add(TData element);
-		Tuple<int, bool> Find(TData element);
+		Tuple<string, int, bool, float> Find(TData element);
 	}
 
 	class RedBlack<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>{
@@ -73,7 +73,7 @@ namespace onderzoek {
 			this._tree.InsertNode(node);
 		}
 
-		public Tuple<int, bool> Find(TData element)
+		public Tuple<string, int, bool, float> Find(TData element)
 		{
 			RedBlackNode<TData, int> node;
 			float m = GC.GetTotalMemory(false);
@@ -102,7 +102,7 @@ namespace onderzoek {
 			this._tree.Add(element, 0);
 		}
 
-		public Tuple<int, bool> Find(TData element)
+		public Tuple<string, int, bool, float> Find(TData element)
 		{
 			bool b;
 			float m = GC.GetTotalMemory(false);
@@ -130,7 +130,7 @@ namespace onderzoek {
 			this._tree.Add(element);
 		}
 
-		public Tuple<int, bool> Find(TData element)
+		public Tuple<string, int, bool, float> Find(TData element)
 		{
 			bool b;
 			float m = GC.GetTotalMemory(false);
@@ -154,7 +154,7 @@ namespace onderzoek {
 			this._tree.Add(element);
 		}
 
-		public Tuple<int, bool> Find(T element)
+		public Tuple<string, int, bool, float> Find(T element)
 		{
 			bool b;
 			float m = GC.GetTotalMemory(false);
@@ -182,7 +182,7 @@ namespace onderzoek {
 			this._tree.Add(element);
 		}
 
-		public Tuple<int, bool> Find(TData element)
+		public Tuple<string, int, bool, float> Find(TData element)
 		{
 			bool b;
 			float m = GC.GetTotalMemory(false);
@@ -210,7 +210,7 @@ namespace onderzoek {
 			this._tree.Add(element);
 		}
 
-		public Tuple<int, bool> Find(TData element)
+		public Tuple<string, int, bool, float> Find(TData element)
 		{
 			bool b;
 			float m = GC.GetTotalMemory(false);
@@ -231,9 +231,9 @@ namespace onderzoek {
 		public void Add(TData element){
 		}
 
-		public Tuple<int, bool> Find(TData element)
+		public Tuple<string, int, bool, float> Find(TData element)
 		{
-			return new Tuple<int, bool>(0, false);
+			return new Tuple<string, int, bool, float>(0, false);
 		}
 	}
 }
