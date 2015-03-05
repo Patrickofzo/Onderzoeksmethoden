@@ -42,12 +42,8 @@ namespace onderzoek
 			delta = GC.GetTotalMemory(false) - delta;
 			sw.WriteLine("{0}\t{1}\t{2}", "Create", "BinHeap", delta);
 
-			ISearchTree<T> beap = new Beap<T>(data);
-			delta = GC.GetTotalMemory(false) - delta;
-			sw.WriteLine("{0}\t{1}\t{2}", "Create", "Beap", delta);
-
 			ISearchTree<T>[] trees = new ISearchTree<T>[]{
-				rb, b, bplus, avl, sg, bh, beap
+				rb, b, bplus, avl, sg, bh
 			};
 			foreach (ISearchTree<T> tree in trees)
 			{

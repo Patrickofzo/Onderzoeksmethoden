@@ -12,10 +12,14 @@ using System.DataStructures;
 namespace onderzoek {
 	class MainClass {
 		public static void Main(string[] args) {
-			Test<string> stringTest = new Test<string>(new string[] { "hallo", "ingmar" }, 'testresults.txt');
-		}
+            Test<string> stringTest = new Test<string>(randomStrings(), "testresults.txt");
+            Test<int> intTest = new Test<int>(randomInts(), "testresults.txt");
+            Test<char> charTest = new Test<char>(randomChars(), "testresults.txt");
+            
+            
+        }
 
-		public int[] randomInts() 
+		public static int[] randomInts() 
 		{
 			int[] list = new int[1000];
 			Random random = new Random();
@@ -24,7 +28,7 @@ namespace onderzoek {
 			return list;
 		}
 
-		public char[] randomChar()
+		public static char[] randomChars()
 		{
 			string s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 			char[] list = new char[1000];
@@ -34,7 +38,7 @@ namespace onderzoek {
 			return list;
 		}
 
-		public string[] randomString()
+        public static string[] randomStrings()
 		{
 			string s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 			string[] list = new string[1000];
@@ -222,19 +226,5 @@ namespace onderzoek {
 		}
 	}
 
-	class Beap<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>
-	{
-		public Beap(TData[] data){
-			Console.WriteLine("Hello");
-		}
-
-		public void Add(TData element){
-		}
-
-		public Tuple<string, int, bool, float> Find(TData element)
-		{
-			return new Tuple<string, int, bool, float>(0, false);
-		}
-	}
 }
 
