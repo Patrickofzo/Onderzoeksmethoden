@@ -66,7 +66,7 @@ namespace onderzoek
                 i = random.Next(1000);
                 foreach (ISearchTree<T> tree in trees)
                 {
-                    Tuple<string, int, bool, float> result = tree.Find(data[i]);
+                    Tuple<string, long, bool, float> result = tree.Find(data[i]);
                     sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Find", result.Item1, result.Item4, result.Item2);
                 }
             }
