@@ -15,7 +15,7 @@ namespace onderzoek
     {
         public static void Main(string[] args)
         {
-            Test<int> intTest = new Test<int>(randomInts(), "testresults.txt");
+            //Test<int> intTest = new Test<int>(randomInts(), "testresults.txt");
             Test<string> stringTest = new Test<string>(randomStrings(), "testresults.txt");
             //Test<char> charTest = new Test<char>(randomChars(), "testresults.txt");
 
@@ -24,9 +24,9 @@ namespace onderzoek
 
         public static int[] randomInts()
         {
-            int[] list = new int[1000];
+            int[] list = new int[100000];
             Random random = new Random();
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 10000; i++)
                 list[i] = random.Next(int.MaxValue);
             return list;
         }
@@ -34,7 +34,7 @@ namespace onderzoek
         public static char[] randomChars()
         {
             string s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            char[] list = new char[1000];
+            char[] list = new char[10000];
             Random random = new Random();
             for (int i = 0; i < 1000; i++)
                 list[i] = s[random.Next(s.Length)];
@@ -43,20 +43,20 @@ namespace onderzoek
 
         public static string[] randomStrings()
         {
-            string s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            string[] list = new string[1000];
+            string s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_!@#$%&*()";
+            string[] list = new string[100000];
             Random random1 = new Random();
             Random random2 = new Random();
-            for (int i = 0; i < 1000; i++)
-                for (int j = 0; j < 10; j++)
-                    if (random2.Next(5) != 1)
-                        list[i] = list[i] + s[random1.Next(s.Length)];
+            for (int i = 0; i < 100000; i++)
+                for (int j = 0; j < 50; j++)
+                    list[i] = list[i] + s[random1.Next(s.Length)];
             return list;
         }
     }
 
     interface ISearchTree<TData> where TData : IComparable, IComparable<TData>
     {
+        string Name();
         void Add(TData element);
         Tuple<string, long, bool, float> Find(TData element);
     }
@@ -64,7 +64,7 @@ namespace onderzoek
     class RedBlack<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>
     {
         RedBlackTree<RedBlackNode<TData, int>, TData, int> _tree;
-        public string name = "RedBlk";
+        public string Name() { return "RedBlk"; }
 
         public RedBlack()
         {
@@ -94,14 +94,14 @@ namespace onderzoek
             timer.Start();
             node = this._tree.Find(element);
             timer.Stop();
-            return new Tuple<string, long, bool, float>(this.name, timer.Elapsed.Ticks, node != null, GC.GetTotalMemory(false));
+            return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, node != null, GC.GetTotalMemory(false));
         }
     }
 
     class BPlusTree<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>
     {
         CSharpTest.Net.Collections.BPlusTree<TData, int> _tree;
-        public string name = "BPlus";
+        public string Name() { return "BPlus"; }
 
         public BPlusTree(TData[] data)
         {
@@ -126,14 +126,14 @@ namespace onderzoek
             timer.Start();
             b = this._tree.Contains(new KeyValuePair<TData, int>(element, 0));
             timer.Stop();
-            return new Tuple<string, long, bool, float>(this.name, timer.Elapsed.Ticks, b, GC.GetTotalMemory(false));
+            return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, GC.GetTotalMemory(false));
         }
     }
 
     class BTree<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>
     {
         CSharpTest.Net.Collections.BTreeList<TData> _tree;
-        public string name = "BTree";
+        public string Name() { return "BTree"; }
 
         public BTree(TData[] data)
         {
@@ -158,14 +158,14 @@ namespace onderzoek
             timer.Start();
             b = this._tree.Contains(element);
             timer.Stop();
-            return new Tuple<string, long, bool, float>(this.name, timer.Elapsed.Ticks, b, GC.GetTotalMemory(false));
+            return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, GC.GetTotalMemory(false));
         }
     }
 
     class AvlTree<T> : ISearchTree<T> where T : IComparable, IComparable<T>
     {
         System.DataStructures.AvlTree<T> _tree;
-        public string name = "AVL";
+        public string Name() { return "AVL"; }
 
         public AvlTree(T[] data)
         {
@@ -186,14 +186,14 @@ namespace onderzoek
             timer.Start();
             b = this._tree.Contains(element);
             timer.Stop();
-            return new Tuple<string, long, bool, float>(this.name, timer.Elapsed.Ticks, b, GC.GetTotalMemory(false));
+            return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, GC.GetTotalMemory(false));
         }
     }
 
     class ScapeGoat<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>
     {
         SpaceGoat<TData> _tree;
-        public string name = "Goat";
+        public string Name() { return "Goat"; }
         public ScapeGoat(TData[] data)
         {
             this._tree = new SpaceGoat<TData>();
@@ -217,14 +217,14 @@ namespace onderzoek
             timer.Start();
             b = this._tree.Contains(element);
             timer.Stop();
-            return new Tuple<string, long, bool, float>(this.name, timer.Elapsed.Ticks, b, GC.GetTotalMemory(false));
+            return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, GC.GetTotalMemory(false));
         }
     }
 
     class BinHeap<TData> : ISearchTree<TData> where TData : IComparable, IComparable<TData>
     {
         BinaryHeap<TData> _tree;
-        public string name = "BinHeap";
+        public string Name() { return "BinHeap"; }
         public BinHeap(TData[] data)
         {
             this._tree = new BinaryHeap<TData>();
@@ -248,7 +248,7 @@ namespace onderzoek
             timer.Start();
             b = this._tree.Contains(element);
             timer.Stop();
-            return new Tuple<string, long, bool, float>(this.name, timer.Elapsed.Ticks, b, GC.GetTotalMemory(false));
+            return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, GC.GetTotalMemory(false));
         }
     }
 
