@@ -36,6 +36,7 @@ namespace onderzoek
             performIntTests(sw, find_sw, 10, 10);
             sw.Close();
             find_sw.Close();
+            Console.ReadLine();
         }
 
         public static void performIntTests(StreamWriter sw_create, StreamWriter sw_find, int search_iterations, int find_iterations)
@@ -123,6 +124,8 @@ namespace onderzoek
                     sw_find.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1 / find_iterations, kv.Value.Item2 / find_iterations);
                 }
             }
+            sw_create.Flush();
+            sw_find.Flush();
         }
 
         public static int[] randomInts(int length)
