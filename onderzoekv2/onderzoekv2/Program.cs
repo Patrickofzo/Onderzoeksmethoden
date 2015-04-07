@@ -15,30 +15,42 @@ namespace onderzoek
     {
         public static void Main(string[] args)
         {
-            string fname = "testresults.txt";
-            StreamWriter sw;
-            if(File.Exists(fname)){
-            sw = File.AppendText(fname);
+            string createname = "create_results.txt";
+            string findname = "find_results.txt";
+            StreamWriter sw, find_sw;
+            if (File.Exists(createname))
+            {
+                sw = File.AppendText(createname);
             }
             else{
-            sw = new StreamWriter(fname);
+                sw = new StreamWriter(createname);
             }
-            performIntTests(sw, 10);
+            if (File.Exists(findname))
+            {
+                find_sw = File.AppendText(findname);
+            }
+            else
+            {
+                find_sw = new StreamWriter(findname);
+            }
+            performIntTests(sw, find_sw, 10, 10);
             sw.Close();
+            find_sw.Close();
         }
 
-        public static void performIntTests(StreamWriter sw, int iterations)
+        public static void performIntTests(StreamWriter sw_create, StreamWriter sw_find, int search_iterations, int find_iterations)
         {
             Dictionary<string, Tuple<float, long>> createMeans = new Dictionary<string,Tuple<float,long>>();
             Dictionary<string, Tuple<float, long>> findMeans = new Dictionary<string,Tuple<float,long>>();
             Test<int> test;
             bool use = true;
-            sw.WriteLine("Creating Integer Trees");
-            for (int length = 1000; length <= 1001; length *= 10)
+            sw_create.WriteLine("Creating Integer Trees");
+            sw_find.WriteLine("Searching Integer Trees");
+            for (int length = 1000; length <= 1000; length *= 10)
             {
-                
-                while (iterations > 0) {
-                    iterations--;
+
+                for (int i = 0; i < search_iterations; i++ )
+                {
                     test = new Test<int>(randomInts(length));
                     use = true;
                     foreach (KeyValuePair<string, Tuple<float, long>> kv in test.CreateTrees())
@@ -51,16 +63,17 @@ namespace onderzoek
                     }
                     if (!use)
                     {
-                        iterations++;
+                        i--;
                         // iterate again to use another dataset
                     }
-                    else{
+                    else
+                    {
                         try
                         {
                             foreach (KeyValuePair<string, Tuple<float, long>> kv in test.CreateTrees())
                             {
-                                createMeans[kv.Key] = new Tuple<float,long>(
-                                    createMeans[kv.Key].Item1 + kv.Value.Item1,    
+                                createMeans[kv.Key] = new Tuple<float, long>(
+                                    createMeans[kv.Key].Item1 + kv.Value.Item1,
                                     createMeans[kv.Key].Item2 + kv.Value.Item2
                                 );
                             }
@@ -69,8 +82,32 @@ namespace onderzoek
                         {
                             foreach (KeyValuePair<string, Tuple<float, long>> kv in test.CreateTrees())
                             {
-                                createMeans[kv.Key] = new Tuple<float,long>(
-                                    kv.Value.Item1,    
+                                createMeans[kv.Key] = new Tuple<float, long>(
+                                    kv.Value.Item1,
+                                    kv.Value.Item2
+                                );
+                            }
+                        }
+                    }
+                    // Do Search Tests
+                    for (int j = 0; j < search_iterations; j++ )
+                    {
+                        try
+                        {
+                            foreach (KeyValuePair<string, Tuple<float, long>> kv in test.FindInTrees())
+                            {
+                                findMeans[kv.Key] = new Tuple<float, long>(
+                                    findMeans[kv.Key].Item1 + kv.Value.Item1,
+                                    findMeans[kv.Key].Item2 + kv.Value.Item2
+                                );
+                            }
+                        }
+                        catch (KeyNotFoundException)
+                        {
+                            foreach (KeyValuePair<string, Tuple<float, long>> kv in test.FindInTrees())
+                            {
+                                findMeans[kv.Key] = new Tuple<float, long>(
+                                    kv.Value.Item1,
                                     kv.Value.Item2
                                 );
                             }
@@ -79,7 +116,11 @@ namespace onderzoek
                 }
                 foreach (KeyValuePair<string, Tuple<float, long>> kv in createMeans)
                 {
-                    sw.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1 / iterations, kv.Value.Item2 / iterations);
+                    sw_create.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1 / search_iterations, kv.Value.Item2 / search_iterations);
+                }
+                foreach (KeyValuePair<string, Tuple<float, long>> kv in findMeans)
+                {
+                    sw_find.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1 / find_iterations, kv.Value.Item2 / find_iterations);
                 }
             }
         }
