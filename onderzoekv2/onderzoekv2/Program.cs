@@ -15,9 +15,8 @@ namespace onderzoek
     {
         public static void Main(string[] args)
         {
-            Test<int> intTest = new Test<int>(randomInts(1000000), "testresults.txt");
-            Test<string> stringTest = new Test<string>(randomStrings(), "testresults.txt");
-            //Test<char> charTest = new Test<char>(randomChars(), "testresults.txt");
+            Test<int> intTest = new Test<int>(randomInts(100000), "testresults.txt");
+            Test<string> stringTest = new Test<string>(randomStrings(100000), "testresults.txt");
 
 
         }
@@ -32,23 +31,13 @@ namespace onderzoek
             return list;
         }
 
-        public static char[] randomChars()
-        {
-            string s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            char[] list = new char[10000];
-            Random random = new Random();
-            for (int i = 0; i < 1000; i++)
-                list[i] = s[random.Next(s.Length)];
-            return list;
-        }
-
-        public static string[] randomStrings()
+        public static string[] randomStrings(int length)
         {
             string s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_!@#$%&*()";
-            string[] list = new string[100000];
+            string[] list = new string[length];
             Random random1 = new Random();
             Random random2 = new Random();
-            for (int i = 0; i < 100000; i++)
+            for (int i = 0; i < length; i++)
                 for (int j = 0; j < 50; j++)
                     list[i] = list[i] + s[random1.Next(s.Length)];
             return list;
