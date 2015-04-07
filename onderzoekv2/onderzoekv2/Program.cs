@@ -123,9 +123,9 @@ namespace onderzoek
                 {
                     sw_find.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1 / find_iterations, kv.Value.Item2 / find_iterations);
                 }
+                sw_create.Flush();
+                sw_find.Flush();
             }
-            sw_create.Flush();
-            sw_find.Flush();
         }
 
         public static int[] randomInts(int length)
