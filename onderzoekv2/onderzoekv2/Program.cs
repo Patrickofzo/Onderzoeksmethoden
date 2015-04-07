@@ -46,9 +46,9 @@ namespace onderzoek
             bool use = true;
             sw_create.WriteLine("Creating Integer Trees");
             sw_find.WriteLine("Searching Integer Trees");
-            for (int length = 1000; length <= 1000; length *= 10)
+            for (int length = 1000; length <= 1000 * 1000; length *= 10)
             {
-
+                Console.WriteLine("{0}\t\t{1}", DateTime.Now, length);
                 for (int i = 0; i < search_iterations; i++ )
                 {
                     test = new Test<int>(randomInts(length));
