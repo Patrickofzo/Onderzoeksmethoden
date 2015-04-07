@@ -15,19 +15,20 @@ namespace onderzoek
     {
         public static void Main(string[] args)
         {
-            //Test<int> intTest = new Test<int>(randomInts(), "testresults.txt");
+            Test<int> intTest = new Test<int>(randomInts(1000000), "testresults.txt");
             Test<string> stringTest = new Test<string>(randomStrings(), "testresults.txt");
             //Test<char> charTest = new Test<char>(randomChars(), "testresults.txt");
 
 
         }
 
-        public static int[] randomInts()
+        public static int[] randomInts(int length)
         {
-            int[] list = new int[100000];
+            int[] list = new int[length];
             Random random = new Random();
-            for (int i = 0; i < 10000; i++)
-                list[i] = random.Next(int.MaxValue);
+            for (int i = 0; i < list.Length; i++)
+                list[i] = i;
+            list = list.OrderBy(x => random.Next()).ToArray();
             return list;
         }
 
