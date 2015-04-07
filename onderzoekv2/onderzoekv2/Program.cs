@@ -15,10 +15,71 @@ namespace onderzoek
     {
         public static void Main(string[] args)
         {
-            Test<int> intTest = new Test<int>(randomInts(100000), "testresults.txt");
-            Test<string> stringTest = new Test<string>(randomStrings(100000), "testresults.txt");
+            string fname = "testresults.txt";
+            StreamWriter sw;
+            if(File.Exists(fname)){
+            sw = File.AppendText(fname);
+            }
+            else{
+            sw = new StreamWriter(fname);
+            }
+            performIntTests(sw, 10);
+            sw.Close();
+        }
 
-
+        public static void performIntTests(StreamWriter sw, int iterations)
+        {
+            Dictionary<string, Tuple<float, long>> createMeans = new Dictionary<string,Tuple<float,long>>();
+            Dictionary<string, Tuple<float, long>> findMeans = new Dictionary<string,Tuple<float,long>>();
+            Test<int> test;
+            int size;
+            bool use = true;
+            for (int length = 1000; length <= 1001; length *= 10)
+            {
+                size = 0;
+                
+                while (iterations > 0) {
+                    iterations--;
+                    test = new Test<int>(randomInts(length));
+                    use = true;
+                    foreach (KeyValuePair<string, Tuple<float, long>> kv in test.CreateTrees())
+                    {
+                        if (kv.Value.Item1 <= 0 || kv.Value.Item2 <= 0)
+                        {
+                            use = false;
+                            break;
+                        }
+                    }
+                    if (use)
+                    {
+                        size += 1;
+                        try
+                        {
+                            foreach (KeyValuePair<string, Tuple<float, long>> kv in test.CreateTrees())
+                            {
+                                createMeans[kv.Key] = new Tuple<float,long>(
+                                    createMeans[kv.Key].Item1 + kv.Value.Item1,    
+                                    createMeans[kv.Key].Item2 + kv.Value.Item2
+                                );
+                            }
+                        }
+                        catch (KeyNotFoundException)
+                        {
+                            foreach (KeyValuePair<string, Tuple<float, long>> kv in test.CreateTrees())
+                            {
+                                createMeans[kv.Key] = new Tuple<float,long>(
+                                    kv.Value.Item1,    
+                                    kv.Value.Item2
+                                );
+                            }
+                        }
+                    }
+                }
+                foreach (KeyValuePair<string, Tuple<float, long>> kv in createMeans)
+                {
+                    sw.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1 / size, kv.Value.Item2 / size);
+                }
+            }
         }
 
         public static int[] randomInts(int length)

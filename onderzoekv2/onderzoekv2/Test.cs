@@ -10,77 +10,84 @@ namespace onderzoek
 {
 	class Test<T> where T : IComparable, IComparable<T>
 	{
-		public Test(T[] data, string fname){
-            Random random = new Random();
-			StreamWriter sw;
-			if(File.Exists(fname)){
-				sw = File.AppendText(fname);
-			}
-			else{
-				sw = new StreamWriter(fname);
-			}
-            sw.WriteLine();
-            sw.WriteLine(DateTime.Now.ToString());
-			float delta = 0;
+        Random _rnd;
+        T[] data;
+        ISearchTree<T>[] trees;
+		public Test(T[] data){
+            this.data = data;
+            this._rnd = new Random();
+		}
+
+        public Dictionary<string, Tuple<float, long>> CreateTrees(){
+            Dictionary<String, Tuple<float, long>> creationData = new Dictionary<string, Tuple<float, long>>();
+            float delta = 0;
             Stopwatch timer = new Stopwatch();
+            GC.WaitForFullGCComplete();
             timer.Start();
-			GC.WaitForFullGCComplete();
-			delta = GC.GetTotalMemory(false);
-			ISearchTree<T> rb = new RedBlack<T>(data);
-			delta = GC.GetTotalMemory(false) - delta;
-            sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Create", rb.Name(), delta, timer.ElapsedTicks);
-            
-            timer.Restart();
-			GC.WaitForFullGCComplete();
-			delta = GC.GetTotalMemory(false);
-			ISearchTree<T> b = new BTree<T>(data);
-			delta = GC.GetTotalMemory(false) - delta;
-            sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Create", b.Name(), delta, timer.ElapsedTicks);
-            
-            timer.Restart();
-			GC.WaitForFullGCComplete();
-			delta = GC.GetTotalMemory(false);
-			ISearchTree<T> bplus = new BPlusTree<T>(data);
-			delta = GC.GetTotalMemory(false) - delta;
-            sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Create", bplus.Name(), delta, timer.ElapsedTicks);
+            delta = GC.GetTotalMemory(false);
+            ISearchTree<T> rb = new RedBlack<T>(this.data);
+            delta = GC.GetTotalMemory(false) - delta;
+            //sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Create", rb.Name(), delta, timer.ElapsedTicks);
+            creationData.Add(rb.Name(), new Tuple<float, long>(delta, timer.ElapsedTicks));
 
+
+            GC.WaitForFullGCComplete();
             timer.Restart();
-			GC.WaitForFullGCComplete();
-			delta = GC.GetTotalMemory(false);
-			ISearchTree<T> avl = new AvlTree<T>(data);
-			delta = GC.GetTotalMemory(false) - delta;
-            sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Create", avl.Name(), delta, timer.ElapsedTicks);
+            delta = GC.GetTotalMemory(false);
+            ISearchTree<T> b = new BTree<T>(this.data);
+            delta = GC.GetTotalMemory(false) - delta;
+            //sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Create", b.Name(), delta, timer.ElapsedTicks);
+            creationData.Add(b.Name(), new Tuple<float, long>(delta, timer.ElapsedTicks));
+
+            GC.WaitForFullGCComplete();
+            timer.Restart();
+            delta = GC.GetTotalMemory(false);
+            ISearchTree<T> bplus = new BPlusTree<T>(this.data);
+            delta = GC.GetTotalMemory(false) - delta;
+            //sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Create", bplus.Name(), delta, timer.ElapsedTicks);
+            creationData.Add(bplus.Name(), new Tuple<float, long>(delta, timer.ElapsedTicks));
 
             timer.Restart();
             GC.WaitForFullGCComplete();
-			delta = GC.GetTotalMemory(false);
-			ISearchTree<T> sg = new ScapeGoat<T>(data);
-			delta = GC.GetTotalMemory(false) - delta;
-            sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Create", sg.Name(), delta, timer.ElapsedTicks);
+            delta = GC.GetTotalMemory(false);
+            ISearchTree<T> avl = new AvlTree<T>(this.data);
+            delta = GC.GetTotalMemory(false) - delta;
+            //sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Create", avl.Name(), delta, timer.ElapsedTicks);
+            creationData.Add(avl.Name(), new Tuple<float, long>(delta, timer.ElapsedTicks));
 
-            timer.Restart();
             GC.WaitForFullGCComplete();
-			delta = GC.GetTotalMemory(false);
-			ISearchTree<T> bh = new BinHeap<T>(data);
-			delta = GC.GetTotalMemory(false) - delta;
-            sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Create", bh.Name(), delta, timer.ElapsedTicks);
+            timer.Restart();
+            delta = GC.GetTotalMemory(false);
+            ISearchTree<T> sg = new ScapeGoat<T>(this.data);
+            delta = GC.GetTotalMemory(false) - delta;
+            //sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Create", sg.Name(), delta, timer.ElapsedTicks);
+            creationData.Add(sg.Name(), new Tuple<float, long>(delta, timer.ElapsedTicks));
+
+            GC.WaitForFullGCComplete();
+            timer.Restart();
+            delta = GC.GetTotalMemory(false);
+            ISearchTree<T> bh = new BinHeap<T>(this.data);
+            delta = GC.GetTotalMemory(false) - delta;
+            //sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Create", bh.Name(), delta, timer.ElapsedTicks);
+            creationData.Add(bh.Name(), new Tuple<float, long>(delta, timer.ElapsedTicks));
+
             timer.Stop();
-			ISearchTree<T>[] trees = new ISearchTree<T>[]{
+            this.trees = new ISearchTree<T>[]{
 				rb, b, bplus, avl, sg, bh
 			};
+            return creationData;
+        }
 
-            int i;
-            //for (int a = 0; a < 10; a++)
-            //{
-                i = random.Next(100000);
-                foreach (ISearchTree<T> tree in trees)
-                {
-                    Tuple<string, long, bool, float> result = tree.Find(data[i]);
-                    sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Find", result.Item1, result.Item4, result.Item2);
-                }
-            //}
-			sw.Close();
-
-		}
+        public Dictionary<string, Tuple<float, long>> FindInTrees(){
+            Dictionary<String, Tuple<float, long>> searchData = new Dictionary<string, Tuple<float, long>>();
+            int i = this._rnd.Next(this.data.Length);
+            foreach (ISearchTree<T> tree in this.trees)
+            {
+                Tuple<string, long, bool, float> result = tree.Find(this.data[i]);
+                    
+                searchData.Add(result.Item1, new Tuple<float, long>(result.Item4, result.Item2));
+            }
+            return searchData;
+        }
 	}
 }
