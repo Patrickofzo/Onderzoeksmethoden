@@ -32,11 +32,10 @@ namespace onderzoek
             Dictionary<string, Tuple<float, long>> createMeans = new Dictionary<string,Tuple<float,long>>();
             Dictionary<string, Tuple<float, long>> findMeans = new Dictionary<string,Tuple<float,long>>();
             Test<int> test;
-            int size;
             bool use = true;
+            sw.WriteLine("Creating Integer Trees");
             for (int length = 1000; length <= 1001; length *= 10)
             {
-                size = 0;
                 
                 while (iterations > 0) {
                     iterations--;
@@ -50,9 +49,12 @@ namespace onderzoek
                             break;
                         }
                     }
-                    if (use)
+                    if (!use)
                     {
-                        size += 1;
+                        iterations++;
+                        // iterate again to use another dataset
+                    }
+                    else{
                         try
                         {
                             foreach (KeyValuePair<string, Tuple<float, long>> kv in test.CreateTrees())
@@ -77,7 +79,7 @@ namespace onderzoek
                 }
                 foreach (KeyValuePair<string, Tuple<float, long>> kv in createMeans)
                 {
-                    sw.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1 / size, kv.Value.Item2 / size);
+                    sw.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1 / iterations, kv.Value.Item2 / iterations);
                 }
             }
         }
