@@ -19,7 +19,8 @@ namespace onderzoek
 			else{
 				sw = new StreamWriter(fname);
 			}
-            sw.WriteLine("1. Int 2. Strings");
+            sw.WriteLine();
+            sw.WriteLine(DateTime.Now.ToString());
 			float delta = 0;
             Stopwatch timer = new Stopwatch();
             timer.Start();
