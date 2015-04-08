@@ -45,10 +45,14 @@ namespace onderzoek
             Dictionary<string, Tuple<float, long>> findMeans = new Dictionary<string,Tuple<float,long>>();
             Test<int> test;
             bool use = true;
+            int negatives = 0;
+            int goodies = 0;
             sw_create.WriteLine("Creating Integer Trees");
             sw_find.WriteLine("Searching Integer Trees");
             for (int length = 1000; length <= 1000 * 1000; length *= 10)
             {
+                negatives = 0;
+                goodies = 0;
                 Console.WriteLine("{0}\t\t{1}", DateTime.Now, length);
                 for (int i = 0; i < search_iterations; i++ )
                 {
@@ -64,11 +68,15 @@ namespace onderzoek
                     }
                     if (!use)
                     {
+                        negatives += 1;
+                        Console.Write("\r{0}\t{1}", negatives, goodies);
                         i--;
                         // iterate again to use another dataset
                     }
                     else
                     {
+                        goodies += 1;
+                        Console.Write("\r{0}\t{1}", negatives, goodies);
                         try
                         {
                             foreach (KeyValuePair<string, Tuple<float, long>> kv in test.CreateTrees())
@@ -125,6 +133,7 @@ namespace onderzoek
                 }
                 sw_create.Flush();
                 sw_find.Flush();
+                Console.WriteLine();
             }
         }
 
