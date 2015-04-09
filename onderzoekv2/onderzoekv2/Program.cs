@@ -60,7 +60,8 @@ namespace onderzoek
                 {
                     test = new Test<int>(randomInts(length));
                     use = true;
-                    foreach (KeyValuePair<string, Tuple<float, long>> kv in test.CreateTrees())
+                    var newTrees = test.CreateTrees();
+                    foreach (KeyValuePair<string, Tuple<float, long>> kv in newTrees)
                     {
                         if (kv.Value.Item1 <= 0 || kv.Value.Item2 <= 0)
                         {
@@ -81,11 +82,11 @@ namespace onderzoek
                         Console.Write("\r{0}\t{1}", negatives, goodies);
                         try
                         {
-                            foreach (KeyValuePair<string, Tuple<float, long>> kv in test.CreateTrees())
+                            foreach (KeyValuePair<string, Tuple<float, long>> kv in newTrees)
                             {
                                 createMeans[kv.Key] = new Tuple<float, long>(
-                                    (createMeans[kv.Key].Item1 + kv.Value.Item1) / create_iterations,
-                                    (createMeans[kv.Key].Item2 + kv.Value.Item2) / create_iterations
+                                    createMeans[kv.Key].Item1 + (kv.Value.Item1 / create_iterations),
+                                    createMeans[kv.Key].Item2 + (kv.Value.Item2 / create_iterations)
                                 );
                             }
                         }
@@ -108,8 +109,8 @@ namespace onderzoek
                             foreach (KeyValuePair<string, Tuple<float, long>> kv in test.FindInTrees())
                             {
                                 findMeans[kv.Key] = new Tuple<float, long>(
-                                    (findMeans[kv.Key].Item1 + kv.Value.Item1) / find_iterations,
-                                    (findMeans[kv.Key].Item2 + kv.Value.Item2) / find_iterations
+                                    findMeans[kv.Key].Item1 + (kv.Value.Item1 / find_iterations),
+                                    findMeans[kv.Key].Item2 + (kv.Value.Item2 / find_iterations)
                                 );
                             }
                         }
