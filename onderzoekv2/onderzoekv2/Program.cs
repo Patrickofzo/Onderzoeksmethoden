@@ -39,10 +39,10 @@ namespace onderzoek
             Console.ReadLine();
         }
 
-        public static void performIntTests(StreamWriter sw_create, StreamWriter sw_find, int search_iterations, int find_iterations)
+        public static void performIntTests(StreamWriter sw_create, StreamWriter sw_find, int create_iterations, int find_iterations)
         {
-            Dictionary<string, Tuple<float, long>> createMeans = new Dictionary<string,Tuple<float,long>>();
-            Dictionary<string, Tuple<float, long>> findMeans = new Dictionary<string,Tuple<float,long>>();
+            Dictionary<string, Tuple<float, long>> createMeans;
+            Dictionary<string, Tuple<float, long>> findMeans;
             Test<int> test;
             bool use = true;
             int negatives = 0;
@@ -51,10 +51,12 @@ namespace onderzoek
             sw_find.WriteLine("Searching Integer Trees");
             for (int length = 1000; length <= 1000 * 1000; length *= 10)
             {
+                createMeans = new Dictionary<string, Tuple<float, long>>();
+                findMeans = new Dictionary<string, Tuple<float, long>>();
                 negatives = 0;
                 goodies = 0;
                 Console.WriteLine("{0}\t\t{1}", DateTime.Now, length);
-                for (int i = 0; i < search_iterations; i++ )
+                for (int i = 0; i < create_iterations; i++ )
                 {
                     test = new Test<int>(randomInts(length));
                     use = true;
@@ -82,8 +84,8 @@ namespace onderzoek
                             foreach (KeyValuePair<string, Tuple<float, long>> kv in test.CreateTrees())
                             {
                                 createMeans[kv.Key] = new Tuple<float, long>(
-                                    createMeans[kv.Key].Item1 + kv.Value.Item1,
-                                    createMeans[kv.Key].Item2 + kv.Value.Item2
+                                    (createMeans[kv.Key].Item1 + kv.Value.Item1) / create_iterations,
+                                    (createMeans[kv.Key].Item2 + kv.Value.Item2) / create_iterations
                                 );
                             }
                         }
@@ -92,22 +94,22 @@ namespace onderzoek
                             foreach (KeyValuePair<string, Tuple<float, long>> kv in test.CreateTrees())
                             {
                                 createMeans[kv.Key] = new Tuple<float, long>(
-                                    kv.Value.Item1,
-                                    kv.Value.Item2
+                                    kv.Value.Item1 / create_iterations,
+                                    kv.Value.Item2 / create_iterations
                                 );
                             }
                         }
                     }
                     // Do Search Tests
-                    for (int j = 0; j < search_iterations; j++ )
+                    for (int j = 0; j < find_iterations; j++ )
                     {
                         try
                         {
                             foreach (KeyValuePair<string, Tuple<float, long>> kv in test.FindInTrees())
                             {
                                 findMeans[kv.Key] = new Tuple<float, long>(
-                                    findMeans[kv.Key].Item1 + kv.Value.Item1,
-                                    findMeans[kv.Key].Item2 + kv.Value.Item2
+                                    (findMeans[kv.Key].Item1 + kv.Value.Item1) / find_iterations,
+                                    (findMeans[kv.Key].Item2 + kv.Value.Item2) / find_iterations
                                 );
                             }
                         }
@@ -116,8 +118,8 @@ namespace onderzoek
                             foreach (KeyValuePair<string, Tuple<float, long>> kv in test.FindInTrees())
                             {
                                 findMeans[kv.Key] = new Tuple<float, long>(
-                                    kv.Value.Item1,
-                                    kv.Value.Item2
+                                    kv.Value.Item1 / find_iterations,
+                                    kv.Value.Item2 / find_iterations
                                 );
                             }
                         }
@@ -125,11 +127,11 @@ namespace onderzoek
                 }
                 foreach (KeyValuePair<string, Tuple<float, long>> kv in createMeans)
                 {
-                    sw_create.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1 / search_iterations, kv.Value.Item2 / search_iterations);
+                    sw_create.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
                 }
                 foreach (KeyValuePair<string, Tuple<float, long>> kv in findMeans)
                 {
-                    sw_find.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1 / find_iterations, kv.Value.Item2 / find_iterations);
+                    sw_find.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
                 }
                 sw_create.Flush();
                 sw_find.Flush();
