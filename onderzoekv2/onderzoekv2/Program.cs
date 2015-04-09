@@ -104,9 +104,10 @@ namespace onderzoek
                     // Do Search Tests
                     for (int j = 0; j < find_iterations; j++ )
                     {
+                        var findResults = test.FindInTrees();
                         try
                         {
-                            foreach (KeyValuePair<string, Tuple<float, long>> kv in test.FindInTrees())
+                            foreach (KeyValuePair<string, Tuple<float, long>> kv in findResults)
                             {
                                 findMeans[kv.Key] = new Tuple<float, long>(
                                     findMeans[kv.Key].Item1 + (kv.Value.Item1 / find_iterations),
@@ -116,7 +117,7 @@ namespace onderzoek
                         }
                         catch (KeyNotFoundException)
                         {
-                            foreach (KeyValuePair<string, Tuple<float, long>> kv in test.FindInTrees())
+                            foreach (KeyValuePair<string, Tuple<float, long>> kv in findResults)
                             {
                                 findMeans[kv.Key] = new Tuple<float, long>(
                                     kv.Value.Item1 / find_iterations,
