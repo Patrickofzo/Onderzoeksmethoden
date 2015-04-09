@@ -29,7 +29,8 @@ namespace onderzoek
             proc = Process.GetCurrentProcess();
             delta = proc.PrivateMemorySize64;
             ISearchTree<T> rb = new RedBlack<T>(this.data);
-            delta = delta - proc.PrivateMemorySize64;
+            proc = Process.GetCurrentProcess();
+            delta = proc.PrivateMemorySize64 - delta;
             //sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Create", rb.Name(), delta, timer.ElapsedTicks);
             creationData.Add(rb.Name(), new Tuple<float, long>(delta, timer.ElapsedTicks));
 
@@ -39,7 +40,8 @@ namespace onderzoek
             proc = Process.GetCurrentProcess();
             delta = proc.PrivateMemorySize64;
             ISearchTree<T> b = new BTree<T>(this.data);
-            delta = delta - proc.PrivateMemorySize64;
+            proc = Process.GetCurrentProcess();
+            delta = proc.PrivateMemorySize64 - delta;
             //sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Create", b.Name(), delta, timer.ElapsedTicks);
             creationData.Add(b.Name(), new Tuple<float, long>(delta, timer.ElapsedTicks));
 
@@ -48,7 +50,8 @@ namespace onderzoek
             proc = Process.GetCurrentProcess();
             delta = proc.PrivateMemorySize64;
             ISearchTree<T> bplus = new BPlusTree<T>(this.data);
-            delta = delta - proc.PrivateMemorySize64;
+            proc = Process.GetCurrentProcess();
+            delta = proc.PrivateMemorySize64 - delta;
             //sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Create", bplus.Name(), delta, timer.ElapsedTicks);
             creationData.Add(bplus.Name(), new Tuple<float, long>(delta, timer.ElapsedTicks));
 
@@ -57,7 +60,8 @@ namespace onderzoek
             proc = Process.GetCurrentProcess();
             delta = proc.PrivateMemorySize64;
             ISearchTree<T> avl = new AvlTree<T>(this.data);
-            delta = delta - proc.PrivateMemorySize64;
+            proc = Process.GetCurrentProcess();
+            delta = proc.PrivateMemorySize64 - delta;
             //sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Create", avl.Name(), delta, timer.ElapsedTicks);
             creationData.Add(avl.Name(), new Tuple<float, long>(delta, timer.ElapsedTicks));
 
@@ -66,7 +70,8 @@ namespace onderzoek
             proc = Process.GetCurrentProcess();
             delta = proc.PrivateMemorySize64;
             ISearchTree<T> sg = new ScapeGoat<T>(this.data);
-            delta = delta - proc.PrivateMemorySize64;
+            proc = Process.GetCurrentProcess();
+            delta = proc.PrivateMemorySize64 - delta;
             //sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Create", sg.Name(), delta, timer.ElapsedTicks);
             creationData.Add(sg.Name(), new Tuple<float, long>(delta, timer.ElapsedTicks));
 
@@ -75,7 +80,8 @@ namespace onderzoek
             proc = Process.GetCurrentProcess();
             delta = proc.PrivateMemorySize64;
             ISearchTree<T> bh = new BinHeap<T>(this.data);
-            delta = delta - proc.PrivateMemorySize64;
+            proc = Process.GetCurrentProcess();
+            delta = proc.PrivateMemorySize64 - delta;
             //sw.WriteLine("{0}\t{1}\t{2}\t{3}", "Create", bh.Name(), delta, timer.ElapsedTicks);
             creationData.Add(bh.Name(), new Tuple<float, long>(delta, timer.ElapsedTicks));
 
