@@ -195,12 +195,13 @@ namespace onderzoek
         {
             GC.WaitForFullGCComplete();
             RedBlackNode<TData, int> node;
-            float m = GC.GetTotalMemory(false);
             Stopwatch timer = new Stopwatch();
             timer.Start();
+            Process proc = Process.GetCurrentProcess();
             node = this._tree.Find(element);
+            float m = proc.PrivateMemorySize64;
             timer.Stop();
-            return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, node != null, GC.GetTotalMemory(false));
+            return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, node != null, m);
         }
     }
 
@@ -227,12 +228,13 @@ namespace onderzoek
         {
             bool b;
             GC.WaitForFullGCComplete();
-            float m = GC.GetTotalMemory(false);
             Stopwatch timer = new Stopwatch();
             timer.Start();
+            Process proc = Process.GetCurrentProcess();
             b = this._tree.Contains(new KeyValuePair<TData, int>(element, 0));
+            float m = proc.PrivateMemorySize64;
             timer.Stop();
-            return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, GC.GetTotalMemory(false));
+            return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, m);
         }
     }
 
@@ -259,12 +261,13 @@ namespace onderzoek
         {
             bool b;
             GC.WaitForFullGCComplete();
-            float m = GC.GetTotalMemory(false);
             Stopwatch timer = new Stopwatch();
             timer.Start();
+            Process proc = Process.GetCurrentProcess();
             b = this._tree.Contains(element);
+            float m = proc.PrivateMemorySize64;
             timer.Stop();
-            return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, GC.GetTotalMemory(false));
+            return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, m);
         }
     }
 
@@ -287,12 +290,13 @@ namespace onderzoek
         {
             bool b;
             GC.WaitForFullGCComplete();
-            float m = GC.GetTotalMemory(false);
             Stopwatch timer = new Stopwatch();
             timer.Start();
+            Process proc = Process.GetCurrentProcess();
             b = this._tree.Contains(element);
+            float m = proc.PrivateMemorySize64;
             timer.Stop();
-            return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, GC.GetTotalMemory(false));
+            return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, m);
         }
     }
 
@@ -318,12 +322,13 @@ namespace onderzoek
         {
             bool b;
             GC.WaitForFullGCComplete();
-            float m = GC.GetTotalMemory(false);
             Stopwatch timer = new Stopwatch();
             timer.Start();
+            Process proc = Process.GetCurrentProcess();
             b = this._tree.Contains(element);
+            float m = proc.PrivateMemorySize64;
             timer.Stop();
-            return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, GC.GetTotalMemory(false));
+            return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, m);
         }
     }
 
@@ -349,12 +354,13 @@ namespace onderzoek
         {
             bool b;
             GC.WaitForFullGCComplete();
-            float m = GC.GetTotalMemory(false);
             Stopwatch timer = new Stopwatch();
             timer.Start();
+            Process proc = Process.GetCurrentProcess();
             b = this._tree.Contains(element);
+            float m = proc.PrivateMemorySize64;
             timer.Stop();
-            return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, GC.GetTotalMemory(false));
+            return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, m);
         }
     }
 
