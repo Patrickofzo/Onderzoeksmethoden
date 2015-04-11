@@ -33,10 +33,112 @@ namespace onderzoek
             {
                 find_sw = new StreamWriter(findname);
             }
-            performIntTests(sw, find_sw, 10, 10);
+            performStringTests(sw, find_sw, 10, 10);
             sw.Close();
             find_sw.Close();
             Console.ReadLine();
+        }
+
+        public static void performStringTests(StreamWriter sw_create, StreamWriter sw_find, int create_iterations, int find_iterations)
+        {
+            Dictionary<string, Tuple<float, long>> createMeans;
+            Dictionary<string, Tuple<float, long>> findMeans;
+            Test<string> test;
+            bool use = true;
+            int negatives = 0;
+            int goodies = 0;
+            sw_create.WriteLine("Creating String Trees");
+            sw_find.WriteLine("Searching String Trees");
+            for (int length = 1000; length <= 1000 * 1000; length *= 10)
+            {
+                createMeans = new Dictionary<string, Tuple<float, long>>();
+                findMeans = new Dictionary<string, Tuple<float, long>>();
+                negatives = 0;
+                goodies = 0;
+                Console.WriteLine("{0}\t\t{1}", DateTime.Now, length);
+                for (int i = 0; i < create_iterations; i++)
+                {
+                    test = new Test<string>(randomStrings(length));
+                    use = true;
+                    var newTrees = test.CreateTrees();
+                    foreach (KeyValuePair<string, Tuple<float, long>> kv in newTrees)
+                    {
+                        if (kv.Value.Item1 <= 0 || kv.Value.Item2 <= 0)
+                        {
+                            use = false;
+                            break;
+                        }
+                    }
+                    if (!use)
+                    {
+                        negatives += 1;
+                        Console.Write("\r{0}\t{1}", negatives, goodies);
+                        i--;
+                        // iterate again to use another dataset
+                    }
+                    else
+                    {
+                        goodies += 1;
+                        Console.Write("\r{0}\t{1}", negatives, goodies);
+                        try
+                        {
+                            foreach (KeyValuePair<string, Tuple<float, long>> kv in newTrees)
+                            {
+                                createMeans[kv.Key] = new Tuple<float, long>(
+                                    createMeans[kv.Key].Item1 + (kv.Value.Item1 / create_iterations),
+                                    createMeans[kv.Key].Item2 + (kv.Value.Item2 / create_iterations)
+                                );
+                            }
+                        }
+                        catch (KeyNotFoundException)
+                        {
+                            foreach (KeyValuePair<string, Tuple<float, long>> kv in test.CreateTrees())
+                            {
+                                createMeans[kv.Key] = new Tuple<float, long>(
+                                    kv.Value.Item1 / create_iterations,
+                                    kv.Value.Item2 / create_iterations
+                                );
+                            }
+                        }
+                    }
+                    // Do Search Tests
+                    for (int j = 0; j < find_iterations; j++)
+                    {
+                        var findResults = test.FindInTrees();
+                        try
+                        {
+                            foreach (KeyValuePair<string, Tuple<float, long>> kv in findResults)
+                            {
+                                findMeans[kv.Key] = new Tuple<float, long>(
+                                    findMeans[kv.Key].Item1 + (kv.Value.Item1 / find_iterations),
+                                    findMeans[kv.Key].Item2 + (kv.Value.Item2 / find_iterations)
+                                );
+                            }
+                        }
+                        catch (KeyNotFoundException)
+                        {
+                            foreach (KeyValuePair<string, Tuple<float, long>> kv in findResults)
+                            {
+                                findMeans[kv.Key] = new Tuple<float, long>(
+                                    kv.Value.Item1 / find_iterations,
+                                    kv.Value.Item2 / find_iterations
+                                );
+                            }
+                        }
+                    }
+                }
+                foreach (KeyValuePair<string, Tuple<float, long>> kv in createMeans)
+                {
+                    sw_create.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
+                }
+                foreach (KeyValuePair<string, Tuple<float, long>> kv in findMeans)
+                {
+                    sw_find.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
+                }
+                sw_create.Flush();
+                sw_find.Flush();
+                Console.WriteLine();
+            }
         }
 
         public static void performIntTests(StreamWriter sw_create, StreamWriter sw_find, int create_iterations, int find_iterations)
