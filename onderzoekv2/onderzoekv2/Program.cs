@@ -33,7 +33,7 @@ namespace onderzoek
             {
                 find_sw = new StreamWriter(findname);
             }
-            performStringTests(sw, find_sw, 10, 10);
+            performIntTests(sw, find_sw, 10, 10);
             sw.Close();
             find_sw.Close();
             Console.ReadLine();
@@ -172,8 +172,8 @@ namespace onderzoek
             Dictionary<string, Tuple<float, long>> findMeans;
             Test<int> test;
             bool use = true;
-            int negatives = 0;
-            int goodies = 0;
+            bool useFind = true;
+            int negatives, goodies, negaFinds, goodieFinds;
             sw_create.WriteLine("Creating Integer Trees");
             sw_find.WriteLine("Searching Integer Trees");
             for (int length = 1000; length <= 1000 * 1000; length *= 10)
@@ -182,6 +182,8 @@ namespace onderzoek
                 findMeans = new Dictionary<string, Tuple<float, long>>();
                 negatives = 0;
                 goodies = 0;
+                negaFinds = 0;
+                goodieFinds = 0;
                 Console.WriteLine("{0}\t\t{1}", DateTime.Now, length);
                 for (int i = 0; i < create_iterations; i++ )
                 {
@@ -229,27 +231,48 @@ namespace onderzoek
                         }
                     }
                     // Do Search Tests
-                    for (int j = 0; j < find_iterations; j++ )
+                    for (int j = 0; j < find_iterations && use; j++)
                     {
+                        useFind = true;
                         var findResults = test.FindInTrees();
-                        try
+                        foreach (KeyValuePair<string, Tuple<float, long>> kv in findResults)
                         {
-                            foreach (KeyValuePair<string, Tuple<float, long>> kv in findResults)
+                            if (kv.Value.Item1 <= 0 || kv.Value.Item2 <= 0)
                             {
-                                findMeans[kv.Key] = new Tuple<float, long>(
-                                    findMeans[kv.Key].Item1 + (kv.Value.Item1 / find_iterations),
-                                    findMeans[kv.Key].Item2 + (kv.Value.Item2 / find_iterations)
-                                );
+                                useFind = false;
+                                break;
                             }
                         }
-                        catch (KeyNotFoundException)
+                        if (!useFind)
                         {
-                            foreach (KeyValuePair<string, Tuple<float, long>> kv in findResults)
+                            negaFinds += 1;
+                            Console.Write("\r{0}\t{1}\t{2}\t{3}", negatives, goodies, negaFinds, goodieFinds);
+                            j--;
+                            // iterate again to use another dataset
+                        }
+                        else
+                        {
+                            goodieFinds += 1;
+                            Console.Write("\r{0}\t{1}\t{2}\t{3}", negatives, goodies, negaFinds, goodieFinds);
+                            try
                             {
-                                findMeans[kv.Key] = new Tuple<float, long>(
-                                    kv.Value.Item1 / find_iterations,
-                                    kv.Value.Item2 / find_iterations
-                                );
+                                foreach (KeyValuePair<string, Tuple<float, long>> kv in findResults)
+                                {
+                                    findMeans[kv.Key] = new Tuple<float, long>(
+                                        findMeans[kv.Key].Item1 + (kv.Value.Item1 / (find_iterations * create_iterations)),
+                                        findMeans[kv.Key].Item2 + (kv.Value.Item2 / (find_iterations * create_iterations))
+                                    );
+                                }
+                            }
+                            catch (KeyNotFoundException)
+                            {
+                                foreach (KeyValuePair<string, Tuple<float, long>> kv in findResults)
+                                {
+                                    findMeans[kv.Key] = new Tuple<float, long>(
+                                        kv.Value.Item1 / (find_iterations * create_iterations),
+                                        kv.Value.Item2 / (find_iterations * create_iterations)
+                                    );
+                                }
                             }
                         }
                     }
