@@ -304,8 +304,10 @@ namespace onderzoek
             Stopwatch timer = new Stopwatch();
             timer.Start();
             Process proc = Process.GetCurrentProcess();
-            node = this._tree.Find(element);
             float m = proc.PrivateMemorySize64;
+            node = this._tree.Find(element);
+            proc = Process.GetCurrentProcess();
+            m = proc.PrivateMemorySize64 - m;
             timer.Stop();
             return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, node != null, m);
         }
@@ -337,8 +339,10 @@ namespace onderzoek
             Stopwatch timer = new Stopwatch();
             timer.Start();
             Process proc = Process.GetCurrentProcess();
-            b = this._tree.Contains(new KeyValuePair<TData, int>(element, 0));
             float m = proc.PrivateMemorySize64;
+            b = this._tree.Contains(new KeyValuePair<TData, int>(element, 0));
+            proc = Process.GetCurrentProcess();
+            m = proc.PrivateMemorySize64 - m;
             timer.Stop();
             return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, m);
         }
@@ -370,8 +374,10 @@ namespace onderzoek
             Stopwatch timer = new Stopwatch();
             timer.Start();
             Process proc = Process.GetCurrentProcess();
-            b = this._tree.Contains(element);
             float m = proc.PrivateMemorySize64;
+            b = this._tree.Contains(element);
+            proc = Process.GetCurrentProcess();
+            m = proc.PrivateMemorySize64 - m;
             timer.Stop();
             return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, m);
         }
@@ -399,8 +405,10 @@ namespace onderzoek
             Stopwatch timer = new Stopwatch();
             timer.Start();
             Process proc = Process.GetCurrentProcess();
-            b = this._tree.Contains(element);
             float m = proc.PrivateMemorySize64;
+            b = this._tree.Contains(element);
+            proc = Process.GetCurrentProcess();
+            m = proc.PrivateMemorySize64 - m;
             timer.Stop();
             return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, m);
         }
@@ -431,8 +439,10 @@ namespace onderzoek
             Stopwatch timer = new Stopwatch();
             timer.Start();
             Process proc = Process.GetCurrentProcess();
-            b = this._tree.Contains(element);
             float m = proc.PrivateMemorySize64;
+            b = this._tree.Contains(element);
+            proc = Process.GetCurrentProcess();
+            m = proc.PrivateMemorySize64 - m;
             timer.Stop();
             return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, m);
         }
@@ -463,8 +473,10 @@ namespace onderzoek
             Stopwatch timer = new Stopwatch();
             timer.Start();
             Process proc = Process.GetCurrentProcess();
-            b = this._tree.Contains(element);
             float m = proc.PrivateMemorySize64;
+            b = this._tree.Contains(element);
+            proc = Process.GetCurrentProcess();
+            m = proc.PrivateMemorySize64 - m;
             timer.Stop();
             return new Tuple<string, long, bool, float>(this.Name(), timer.Elapsed.Ticks, b, m);
         }
