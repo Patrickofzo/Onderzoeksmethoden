@@ -15,8 +15,8 @@ namespace onderzoek
     {
         public static void Main(string[] args)
         {
-            string createname = "create_results.txt";
-            string findname = "find_results.txt";
+            string createname = "create_results.csv";
+            string findname = "find_results.csv";
             StreamWriter sw, find_sw;
             if (File.Exists(createname))
             {
