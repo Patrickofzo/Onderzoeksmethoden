@@ -33,7 +33,7 @@ namespace onderzoek
             {
                 find_sw = new StreamWriter(findname);
             }
-            performIntTests(sw, find_sw, 10, 10);
+            performIntTests(sw, find_sw, 15, 10);
             sw.Close();
             find_sw.Close();
             Console.ReadLine();
@@ -72,6 +72,10 @@ namespace onderzoek
                             use = false;
                             break;
                         }
+                        else
+                        {
+                            sw_create.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
+                        }
                     }
                     if (!use)
                     {
@@ -117,6 +121,10 @@ namespace onderzoek
                                 useFind = false;
                                 break;
                             }
+                            else
+                            {
+                                sw_find.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
+                            }
                         }
                         if (!useFind)
                         {
@@ -129,6 +137,7 @@ namespace onderzoek
                         {
                             goodieFinds += 1;
                             Console.Write("\r{0}\t{1}\t{2}\t{3}", negatives, goodies, negaFinds, goodieFinds);
+                            continue;
                             try
                             {
                                 foreach (KeyValuePair<string, Tuple<float, long>> kv in findResults)
@@ -152,14 +161,14 @@ namespace onderzoek
                         }
                     }
                 }
-                foreach (KeyValuePair<string, Tuple<float, long>> kv in createMeans)
+                /*foreach (KeyValuePair<string, Tuple<float, long>> kv in createMeans)
                 {
                     sw_create.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
                 }
                 foreach (KeyValuePair<string, Tuple<float, long>> kv in findMeans)
                 {
                     sw_find.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
-                }
+                }*/
                 sw_create.Flush();
                 sw_find.Flush();
                 Console.WriteLine();
@@ -197,6 +206,10 @@ namespace onderzoek
                             use = false;
                             break;
                         }
+                        else
+                        {
+                            sw_create.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
+                        }
                     }
                     if (!use)
                     {
@@ -242,6 +255,10 @@ namespace onderzoek
                                 useFind = false;
                                 break;
                             }
+                            else
+                            {
+                                sw_find.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
+                            }
                         }
                         if (!useFind)
                         {
@@ -254,6 +271,7 @@ namespace onderzoek
                         {
                             goodieFinds += 1;
                             Console.Write("\r{0}\t{1}\t{2}\t{3}", negatives, goodies, negaFinds, goodieFinds);
+                            continue;
                             try
                             {
                                 foreach (KeyValuePair<string, Tuple<float, long>> kv in findResults)
@@ -277,14 +295,14 @@ namespace onderzoek
                         }
                     }
                 }
-                foreach (KeyValuePair<string, Tuple<float, long>> kv in createMeans)
+                /*foreach (KeyValuePair<string, Tuple<float, long>> kv in createMeans)
                 {
                     sw_create.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
                 }
                 foreach (KeyValuePair<string, Tuple<float, long>> kv in findMeans)
                 {
                     sw_find.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
-                }
+                }*/
                 sw_create.Flush();
                 sw_find.Flush();
                 Console.WriteLine();
