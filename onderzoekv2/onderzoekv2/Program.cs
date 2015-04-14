@@ -164,7 +164,7 @@ namespace onderzoek
 
                             sw_search_mem.Write("{0}", length);
                             sw_search_spd.Write("{0},", length);
-                            foreach (KeyValuePair<string, Tuple<float, long>> kv in newTrees)
+                            foreach (KeyValuePair<string, Tuple<float, long>> kv in findResults)
                             {
                                 sw_search_mem.Write(",{0}", kv.Value.Item1);
                                 sw_search_spd.Write(",{0}", kv.Value.Item2);
@@ -343,7 +343,7 @@ namespace onderzoek
 
                             sw_search_mem.Write("{0}", length);
                             sw_search_spd.Write("{0}", length);
-                            foreach (KeyValuePair<string, Tuple<float, long>> kv in newTrees)
+                            foreach (KeyValuePair<string, Tuple<float, long>> kv in findResults)
                             {
                                 sw_search_mem.Write(",{0}", kv.Value.Item1);
                                 sw_search_spd.Write(",{0}", kv.Value.Item2);
