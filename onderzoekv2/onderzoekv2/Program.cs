@@ -79,7 +79,7 @@ namespace onderzoek
                             sw_search_mem.Write(",{0}", kv.Key);
                             sw_search_spd.Write(",{0}", kv.Key);
                         }
-                        if (kv.Value.Item1 <= 0 || kv.Value.Item2 <= 0)
+                        if (/*kv.Value.Item1 <= 0 || */kv.Value.Item2 <= 0)
                         {
                             use = false;
                             break;
@@ -323,7 +323,7 @@ namespace onderzoek
                         var findResults = test.FindInTrees();
                         foreach (KeyValuePair<string, Tuple<float, long>> kv in findResults)
                         {
-                            if (kv.Value.Item1 <= 0 || kv.Value.Item2 <= 0)
+                            if (/*kv.Value.Item1 <= 0 || */kv.Value.Item2 <= 0)
                             {
                                 useFind = false;
                                 break;
