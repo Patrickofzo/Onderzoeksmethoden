@@ -15,31 +15,28 @@ namespace onderzoek
     {
         public static void Main(string[] args)
         {
-            string createname = "create_results.csv";
-            string findname = "find_results.csv";
-            StreamWriter sw, find_sw;
-            if (File.Exists(createname))
-            {
-                sw = File.AppendText(createname);
-            }
-            else{
-                sw = new StreamWriter(createname);
-            }
-            if (File.Exists(findname))
-            {
-                find_sw = File.AppendText(findname);
-            }
-            else
-            {
-                find_sw = new StreamWriter(findname);
-            }
-            performIntTests(sw, find_sw, 15, 10);
-            sw.Close();
-            find_sw.Close();
+            StreamWriter sw_create_mem, sw_create_spd, sw_search_mem, sw_search_spd;
+            sw_create_mem = CreateWriter("results\\create_memory.csv");
+            sw_create_spd = CreateWriter("results\\create_speed.csv");
+            sw_search_mem = CreateWriter("results\\search_memory.csv");
+            sw_search_spd = CreateWriter("results\\search_speed.csv");
+            performIntTests(sw_create_mem, sw_create_spd, sw_search_mem, sw_search_spd, 10, 10);
+            sw_create_mem.Close();
+            sw_create_spd.Close();
+            sw_search_mem.Close();
+            sw_search_spd.Close();
             Console.ReadLine();
         }
 
-        public static void performStringTests(StreamWriter sw_create, StreamWriter sw_find, int create_iterations, int find_iterations)
+        public static StreamWriter CreateWriter(string filename)
+        {
+            if (File.Exists(filename))
+                return File.AppendText(filename);
+            else
+                return new StreamWriter(filename); 
+        }
+
+        public static void performStringTests(StreamWriter sw_create_mem, StreamWriter sw_create_spd, StreamWriter sw_search_mem, StreamWriter sw_search_spd, int create_iterations, int find_iterations)
         {
             Console.WriteLine("String Test");
             Console.WriteLine("\r{0}\t{1}\t{2}\t{3}", "-", "+", "-", "+");
@@ -49,8 +46,15 @@ namespace onderzoek
             bool use = true;
             bool useFind = true;
             int negatives, goodies, negaFinds, goodieFinds;
-            sw_create.WriteLine("Creating String Trees");
-            sw_find.WriteLine("Searching String Trees");
+            sw_create_mem.WriteLine("# # # # # # # # # # # # # # # #");
+            sw_create_spd.WriteLine("# # # # # # # # # # # # # # # #");
+            sw_search_mem.WriteLine("# # # # # # # # # # # # # # # #");
+            sw_search_spd.WriteLine("# # # # # # # # # # # # # # # #");
+            sw_create_mem.WriteLine("Creating Integer Trees (memory)");
+            sw_create_spd.WriteLine("Creating Integer Trees (speed)");
+            sw_search_mem.WriteLine("Searching Integer Trees (memory)");
+            sw_search_spd.WriteLine("Searching Integer Trees (speed)");
+            bool firstWrite = true;
             for (int length = 1000; length <= 1000 * 1000; length *= 10)
             {
                 createMeans = new Dictionary<string, Tuple<float, long>>();
@@ -59,6 +63,7 @@ namespace onderzoek
                 goodies = 0;
                 negaFinds = 0;
                 goodieFinds = 0;
+                
                 Console.WriteLine("{0}\t\t{1}", DateTime.Now, length);
                 for (int i = 0; i < create_iterations; i++)
                 {
@@ -67,15 +72,26 @@ namespace onderzoek
                     var newTrees = test.CreateTrees();
                     foreach (KeyValuePair<string, Tuple<float, long>> kv in newTrees)
                     {
+                        if (firstWrite)
+                        {
+                            sw_create_mem.Write(",{0}", kv.Key);
+                            sw_create_spd.Write(",{0}", kv.Key);
+                            sw_search_mem.Write(",{0}", kv.Key);
+                            sw_search_spd.Write(",{0}", kv.Key);
+                        }
                         if (kv.Value.Item1 <= 0 || kv.Value.Item2 <= 0)
                         {
                             use = false;
                             break;
                         }
-                        else
-                        {
-                            sw_create.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
-                        }
+                    }
+                    if (firstWrite)
+                    {
+                        sw_create_mem.WriteLine();
+                        sw_create_spd.WriteLine();
+                        sw_search_mem.WriteLine();
+                        sw_search_spd.WriteLine();
+                        firstWrite = false;
                     }
                     if (!use)
                     {
@@ -88,6 +104,18 @@ namespace onderzoek
                     {
                         goodies += 1;
                         Console.Write("\r{0}\t{1}\t{2}\t{3}", negatives, goodies, negaFinds, goodieFinds);
+
+                        sw_create_mem.Write("{0}", length);
+                        sw_create_spd.Write("{0},", length);
+                        foreach (KeyValuePair<string, Tuple<float, long>> kv in newTrees)
+                        {
+                            //sw_create_mem.Write("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
+                            sw_create_mem.Write(",{0}", kv.Value.Item1);
+                            sw_create_spd.Write(",{0},", kv.Value.Item2);
+                        }
+                        sw_create_mem.WriteLine();
+                        sw_create_spd.WriteLine();
+
                         try
                         {
                             foreach (KeyValuePair<string, Tuple<float, long>> kv in newTrees)
@@ -121,10 +149,6 @@ namespace onderzoek
                                 useFind = false;
                                 break;
                             }
-                            else
-                            {
-                                sw_find.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
-                            }
                         }
                         if (!useFind)
                         {
@@ -137,6 +161,17 @@ namespace onderzoek
                         {
                             goodieFinds += 1;
                             Console.Write("\r{0}\t{1}\t{2}\t{3}", negatives, goodies, negaFinds, goodieFinds);
+
+                            sw_search_mem.Write("{0}", length);
+                            sw_search_spd.Write("{0},", length);
+                            foreach (KeyValuePair<string, Tuple<float, long>> kv in newTrees)
+                            {
+                                sw_search_mem.Write(",{0}", kv.Value.Item1);
+                                sw_search_spd.Write(",{0}", kv.Value.Item2);
+                            }
+                            sw_search_mem.WriteLine();
+                            sw_search_spd.WriteLine();
+
                             continue;
                             try
                             {
@@ -169,13 +204,20 @@ namespace onderzoek
                 {
                     sw_find.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
                 }*/
-                sw_create.Flush();
-                sw_find.Flush();
+                sw_search_mem.WriteLine();
+                sw_search_spd.WriteLine();
+                sw_create_mem.WriteLine();
+                sw_create_spd.WriteLine();
+
+                sw_create_mem.Flush();
+                sw_search_mem.Flush();
+                sw_create_spd.Flush();
+                sw_search_spd.Flush();
                 Console.WriteLine();
             }
         }
 
-        public static void performIntTests(StreamWriter sw_create, StreamWriter sw_find, int create_iterations, int find_iterations)
+        public static void performIntTests(StreamWriter sw_create_mem, StreamWriter sw_create_spd, StreamWriter sw_search_mem, StreamWriter sw_search_spd, int create_iterations, int find_iterations)
         {
             Dictionary<string, Tuple<float, long>> createMeans;
             Dictionary<string, Tuple<float, long>> findMeans;
@@ -183,8 +225,16 @@ namespace onderzoek
             bool use = true;
             bool useFind = true;
             int negatives, goodies, negaFinds, goodieFinds;
-            sw_create.WriteLine("Creating Integer Trees");
-            sw_find.WriteLine("Searching Integer Trees");
+            sw_create_mem.WriteLine("# # # # # # # # # # # # # # # #");
+            sw_create_spd.WriteLine("# # # # # # # # # # # # # # # #");
+            sw_search_mem.WriteLine("# # # # # # # # # # # # # # # #");
+            sw_search_spd.WriteLine("# # # # # # # # # # # # # # # #");
+            sw_create_mem.WriteLine("Creating Integer Trees (memory)");
+            sw_create_spd.WriteLine("Creating Integer Trees (speed)");
+            sw_search_mem.WriteLine("Searching Integer Trees (memory)");
+            sw_search_spd.WriteLine("Searching Integer Trees (speed)");
+            bool firstWrite = true;
+
             for (int length = 1000; length <= 1000 * 1000; length *= 10)
             {
                 createMeans = new Dictionary<string, Tuple<float, long>>();
@@ -201,16 +251,27 @@ namespace onderzoek
                     var newTrees = test.CreateTrees();
                     foreach (KeyValuePair<string, Tuple<float, long>> kv in newTrees)
                     {
+                        if (firstWrite)
+                        {
+                            sw_create_mem.Write(",{0}", kv.Key);
+                            sw_create_spd.Write(",{0}", kv.Key);
+                            sw_search_mem.Write(",{0}", kv.Key);
+                            sw_search_spd.Write(",{0}", kv.Key);
+                        }
                         if (kv.Value.Item1 <= 0 || kv.Value.Item2 <= 0)
                         {
                             use = false;
                             break;
                         }
-                        else
-                        {
-                            sw_create.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
-                        }
                     }
+                    if (firstWrite) {
+                        sw_create_mem.WriteLine();
+                        sw_create_spd.WriteLine();
+                        sw_search_mem.WriteLine();
+                        sw_search_spd.WriteLine();
+                        firstWrite = false;
+                    }
+                        
                     if (!use)
                     {
                         negatives += 1;
@@ -222,6 +283,18 @@ namespace onderzoek
                     {
                         goodies += 1;
                         Console.Write("\r{0}\t{1}", negatives, goodies);
+
+                        sw_create_mem.Write("{0}", length);
+                        sw_create_spd.Write("{0}", length);
+                        foreach (KeyValuePair<string, Tuple<float, long>> kv in newTrees)
+                        {
+                            //sw_create_mem.Write("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
+                            sw_create_mem.Write(",{0}", kv.Value.Item1);
+                            sw_create_spd.Write(",{0}", kv.Value.Item2);
+                        }
+                        sw_create_mem.WriteLine();
+                        sw_create_spd.WriteLine();
+
                         try
                         {
                             foreach (KeyValuePair<string, Tuple<float, long>> kv in newTrees)
@@ -255,10 +328,6 @@ namespace onderzoek
                                 useFind = false;
                                 break;
                             }
-                            else
-                            {
-                                sw_find.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
-                            }
                         }
                         if (!useFind)
                         {
@@ -271,6 +340,17 @@ namespace onderzoek
                         {
                             goodieFinds += 1;
                             Console.Write("\r{0}\t{1}\t{2}\t{3}", negatives, goodies, negaFinds, goodieFinds);
+
+                            sw_search_mem.Write("{0}", length);
+                            sw_search_spd.Write("{0}", length);
+                            foreach (KeyValuePair<string, Tuple<float, long>> kv in newTrees)
+                            {
+                                sw_search_mem.Write(",{0}", kv.Value.Item1);
+                                sw_search_spd.Write(",{0}", kv.Value.Item2);
+                            }
+                            sw_search_mem.WriteLine();
+                            sw_search_spd.WriteLine();
+
                             continue;
                             try
                             {
@@ -303,8 +383,16 @@ namespace onderzoek
                 {
                     sw_find.WriteLine("{0},{1},{2},{3}", kv.Key, length, kv.Value.Item1, kv.Value.Item2);
                 }*/
-                sw_create.Flush();
-                sw_find.Flush();
+
+                sw_search_mem.WriteLine();
+                sw_search_spd.WriteLine();
+                sw_create_mem.WriteLine();
+                sw_create_spd.WriteLine();
+
+                sw_create_mem.Flush();
+                sw_search_mem.Flush();
+                sw_create_spd.Flush();
+                sw_search_spd.Flush();
                 Console.WriteLine();
             }
         }
